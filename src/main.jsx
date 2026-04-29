@@ -36,7 +36,10 @@ const defaultState = {
   dailyGoal: 15,
   transportMode: false,
   cannotListen: false,
+  country: 'Bolivia',
 };
+
+const countryOptions = ['Bolivia', 'Mexico', 'Colombia paisa', 'Argentina', 'Espana', 'Chile'];
 
 const exercises = [
   {
@@ -58,6 +61,16 @@ const exercises = [
       place: 'Uso general en paises hispanohablantes',
       situation: 'Mensaje rapido antes de una clase, cita o reunion.',
       note: 'Suele acompanarse de una causa breve: trafico, transporte o una demora inesperada.',
+      variants: [
+        { region: 'Mexico', expression: 'Voy tarde', meaning: 'Forma directa para avisar que llegaras despues de la hora.' },
+        { region: 'Bolivia', expression: 'Se me hizo tarde', meaning: 'Comunica retraso por demora previa, comun en mensajes cotidianos.' },
+        { region: 'Argentina', expression: 'Estoy llegando tarde', meaning: 'Suena natural cuando ya estas en camino.' },
+        { region: 'Colombia paisa', expression: 'Ya voy llegando pues', meaning: 'El "pues" funciona como enfasis o muletilla, no cambia la idea principal.' },
+      ],
+      confusing: [
+        { expression: 'Pues', equivalent: 'enfasis / muletilla', note: 'Puede aparecer al final de frases sin traducirse directamente al ingles.' },
+        { expression: 'Ah bueno', equivalent: 'ok / fine', note: 'Depende mucho del tono: puede ser aceptacion, resignacion o molestia leve.' },
+      ],
     },
   },
   {
@@ -80,6 +93,16 @@ const exercises = [
       place: 'Restaurantes y cafeterias',
       situation: 'Al terminar de comer y querer pagar.',
       note: 'En varios lugares no llevan la cuenta hasta que el cliente la pide, para no apurarlo.',
+      variants: [
+        { region: 'Mexico', expression: 'La cuenta, por favor', meaning: 'Uso comun y cortes en restaurantes.' },
+        { region: 'Espana', expression: 'La cuenta, por favor', meaning: 'Tambien se usa; puede acompanarse con "cuando puedas".' },
+        { region: 'Argentina', expression: 'Me cobras?', meaning: 'Mas informal, usado en bares o cafeterias.' },
+        { region: 'Colombia paisa', expression: 'Que pena, me regalas la cuenta?', meaning: '"Regalar" no significa gratis; equivale a pedir que te la traigan.' },
+      ],
+      confusing: [
+        { expression: 'Regalame...', equivalent: 'can I have... / please give me...', note: 'En Colombia puede usarse para pedir o comprar algo, no para pedirlo gratis.' },
+        { expression: 'Que pena', equivalent: 'excuse me / sorry', note: 'No siempre significa verguenza; muchas veces introduce una peticion cortes.' },
+      ],
     },
   },
   {
@@ -102,6 +125,16 @@ const exercises = [
       place: 'Trabajo, universidad y amistades',
       situation: 'Retomar una conversacion o revisar informacion pendiente.',
       note: 'En trabajo suena profesional; con amigos puede ser una invitacion casual a conversar.',
+      variants: [
+        { region: 'Mexico', expression: 'Nos ponemos al dia manana', meaning: 'Sirve para revisar novedades o pendientes.' },
+        { region: 'Bolivia', expression: 'Hablamos manana y revisamos', meaning: 'Mas explicito y natural en contexto academico o laboral.' },
+        { region: 'Chile', expression: 'Nos actualizamos manana', meaning: 'Suena mas formal o de trabajo.' },
+        { region: 'Colombia paisa', expression: 'Hagale pues, manana nos ponemos al dia', meaning: '"Hagale pues" suena como aceptar o dar paso a la accion.' },
+      ],
+      confusing: [
+        { expression: 'Hagale pues', equivalent: 'go ahead / alright / let us do it', note: 'Puede sonar como orden literal, pero suele ser una respuesta amigable.' },
+        { expression: 'De una', equivalent: 'right away / definitely', note: 'No significa "one"; expresa aceptacion inmediata.' },
+      ],
     },
   },
   {
@@ -124,6 +157,16 @@ const exercises = [
       place: 'Estaciones, buses y trenes',
       situation: 'Comprar un pasaje con poco tiempo o mucho ruido.',
       note: 'Boleto, billete y pasaje pueden variar por pais, por eso se muestra el contexto.',
+      variants: [
+        { region: 'Mexico', expression: 'Necesito un boleto', meaning: 'Boleto se usa para transporte y entradas.' },
+        { region: 'Espana', expression: 'Necesito un billete', meaning: 'Billete es comun para tren, bus o metro.' },
+        { region: 'Bolivia', expression: 'Necesito un pasaje', meaning: 'Pasaje es frecuente para buses y viajes.' },
+        { region: 'Colombia paisa', expression: 'Me regalas un pasaje?', meaning: 'Puede ser una forma cortes de pedir comprar el pasaje.' },
+      ],
+      confusing: [
+        { expression: 'Pasaje', equivalent: 'ticket / fare', note: 'En varios paises se usa mas que boleto para transporte.' },
+        { expression: 'Regalame un pasaje', equivalent: 'sell me / give me a ticket', note: 'No implica que el pasaje sea gratis.' },
+      ],
     },
   },
   {
@@ -145,6 +188,16 @@ const exercises = [
       place: 'Conversaciones breves',
       situation: 'Abrir una conversacion sin pedir una respuesta larga.',
       note: 'Muchas veces se responde con una frase corta y se sigue con el tema principal.',
+      variants: [
+        { region: 'Mexico', expression: 'Como te va?', meaning: 'Saludo casual que abre conversacion.' },
+        { region: 'Argentina', expression: 'Como andas?', meaning: 'Muy comun en trato informal.' },
+        { region: 'Espana', expression: 'Que tal?', meaning: 'Breve y natural para saludar.' },
+        { region: 'Colombia paisa', expression: 'Quiubo, parce, que mas?', meaning: 'Saludo informal; "parce" equivale a amigo.' },
+      ],
+      confusing: [
+        { expression: 'Quiubo / Que mas?', equivalent: 'hi / what is up?', note: 'No siempre espera una respuesta detallada; funciona como saludo.' },
+        { expression: 'Parce / parcero', equivalent: 'friend / buddy', note: 'Es regional colombiano y muy informal.' },
+      ],
     },
   },
   {
@@ -167,6 +220,16 @@ const exercises = [
       place: 'Restaurantes, visitas y atencion al cliente',
       situation: 'Pedir algo sin sonar brusco.',
       note: 'La cortesia cambia por pais, edad y formalidad de la relacion.',
+      variants: [
+        { region: 'Mexico', expression: 'Me da agua, por favor?', meaning: 'Cortes y comun en restaurantes.' },
+        { region: 'Bolivia', expression: 'Me puede dar agua, por favor?', meaning: 'Mas formal, util con desconocidos.' },
+        { region: 'Espana', expression: 'Me pones agua, por favor?', meaning: 'Informal y frecuente en bares o cafeterias.' },
+        { region: 'Colombia paisa', expression: 'Que pena, me regalas agua?', meaning: 'Peticion cortes; "regalar" equivale a dar o vender segun contexto.' },
+      ],
+      confusing: [
+        { expression: 'Que pena', equivalent: 'excuse me / sorry', note: 'Se usa para pedir algo con cortesia, no solo para expresar pena.' },
+        { expression: 'Esta berraco', equivalent: 'hard / angry / impressive', note: 'Cambia mucho por contexto; puede significar dificil, enojado o muy bueno.' },
+      ],
     },
   },
 ];
@@ -390,16 +453,18 @@ function App() {
             <Menu size={21} />
           </button>
           <StatusBar hearts={state.hearts} xp={state.xp} streak={state.streak} progress={sessionProgress} />
-          <button className="ghost-button" onClick={nextExercise}>
-            <ChevronRight size={18} />
-            <span>Siguiente</span>
-          </button>
+          {view === 'lesson' && (
+            <button className="ghost-button" onClick={nextExercise}>
+              <ChevronRight size={18} />
+              <span>Siguiente</span>
+            </button>
+          )}
         </header>
 
         <section className="workspace">
           {view === 'home' && <HomeScreen appState={appState} actions={actions} />}
           {view === 'lesson' && <LessonScreen appState={appState} actions={actions} />}
-          {view === 'context' && <ContextScreen current={current} />}
+          {view === 'context' && <ContextScreen current={current} state={state} />}
           {view === 'mobility' && <MobilityScreen appState={appState} actions={actions} />}
           {view === 'review' && <ReviewScreen appState={appState} actions={actions} />}
           {view === 'testing' && <TestingScreen state={state} actions={actions} />}
@@ -448,8 +513,8 @@ function HomeScreen({ appState, actions }) {
     <div className="single-column">
       <ScreenHeader
         eyebrow="Inicio"
-        title="Ruta de ingles practico"
-        description="Prototipo funcional para probar problemas reales de aprendizaje: literalidad, contexto, feedback, movilidad, multiplataforma y personalizacion."
+        title="Ruta para aprender ingles practico"
+        description="Prototipo funcional para aprender ingles evitando traducciones literales. El contexto cultural ayuda a explicar como entender y usar cada frase desde el espanol del usuario."
       />
       <div className="stats-grid">
         <Metric icon={Zap} label="XP acumulado" value={state.xp} />
@@ -487,7 +552,7 @@ function HomeScreen({ appState, actions }) {
             <h2>Objetivo de prueba</h2>
           </div>
           <p className="body-text">
-            Pide a cada usuario iniciar una leccion, equivocarse al menos una vez, revisar la explicacion, activar movilidad y cambiar una preferencia. El historial guardara evidencia para comparar resultados.
+            Pide a cada usuario iniciar una leccion de ingles, equivocarse al menos una vez, revisar la explicacion, activar movilidad y cambiar una preferencia cultural. El historial guardara evidencia para comparar resultados.
           </p>
           <button className="primary-button full-button" onClick={() => actions.startLesson(0)}>
             <Zap size={18} />
@@ -611,31 +676,73 @@ function FeedbackPanel({ current, feedback, state, actions }) {
   );
 }
 
-function ContextScreen({ current }) {
+function ContextScreen({ current, state }) {
+  const selectedCountry = state.country;
+  const localVariant = current.culture.variants.find((item) => item.region === selectedCountry);
+
   return (
     <div className="single-column">
       <ScreenHeader
         eyebrow="Contexto cultural"
         title={current.culture.title}
-        description="Esta pantalla resuelve la falta de contexto: muestra uso, situacion y variacion cultural sin depender solamente de banderas."
+        description="Esta pantalla mantiene el foco en aprender ingles: compara la frase inglesa con formas naturales de entenderla o explicarla segun el espanol del usuario."
       />
       <div className="context-layout">
         <div className="panel phrase-card">
-          <span className="label">Frase objetivo</span>
-          <strong>{current.correct}</strong>
+          <span className="label">Ingles que estas aprendiendo</span>
+          <strong>{current.phrase}</strong>
         </div>
+        <div className="panel phrase-card">
+          <span className="label">Equivalente natural para {selectedCountry}</span>
+          <strong>{localVariant ? localVariant.expression : current.correct}</strong>
+          {localVariant && <p>{localVariant.meaning}</p>}
+        </div>
+      </div>
+      <div className="context-layout">
         <div className="panel">
           <InfoRow label="Situacion" value={current.culture.situation} />
           <InfoRow label="Ambito" value={current.culture.place} />
           <InfoRow label="Nota cultural" value={current.culture.note} />
         </div>
       </div>
+      <div className="panel">
+        <div className="panel-title">
+          <Globe2 size={20} />
+          <h2>Como se explicaria desde distintos paises</h2>
+        </div>
+        <div className="culture-grid">
+          {current.culture.variants.map((item) => (
+            <div className={`culture-card ${item.region === selectedCountry ? 'selected-country' : ''}`} key={`${current.id}-${item.region}`}>
+              <span>{item.region}</span>
+              <strong>{item.expression}</strong>
+              <p>{item.meaning}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      {current.culture.confusing && (
+        <div className="panel">
+          <div className="panel-title">
+            <CircleHelp size={20} />
+            <h2>Expresiones regionales que pueden confundir al traducir ingles</h2>
+          </div>
+          <div className="confusion-list">
+            {current.culture.confusing.map((item) => (
+              <div className="confusion-item" key={`${current.id}-${item.expression}`}>
+                <strong>{item.expression}</strong>
+                <span>{item.equivalent}</span>
+                <p>{item.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 function MobilityScreen({ appState, actions }) {
-  const { state, current } = appState;
+  const { state, current, feedback } = appState;
   return (
     <div className="single-column">
       <ScreenHeader
@@ -665,6 +772,17 @@ function MobilityScreen({ appState, actions }) {
           No puedo escuchar ahora
         </button>
       </div>
+      <div className="panel transport-practice">
+        <div className="prompt-box">
+          <span className="label">{state.cannotListen ? 'Alternativa textual' : current.prompt}</span>
+          <strong>{current.phrase}</strong>
+        </div>
+        <p className="body-text">
+          {state.cannotListen
+            ? 'Se muestra la frase en texto para continuar sin audio.'
+            : 'Responde rapido con opciones grandes para simular uso en movimiento.'}
+        </p>
+      </div>
       <div className="quick-grid">
         {[current.correct, current.trap, 'No entiendo'].map((option) => (
           <button key={option} onClick={() => actions.submitAnswer(option, 'movilidad')}>
@@ -672,6 +790,7 @@ function MobilityScreen({ appState, actions }) {
           </button>
         ))}
       </div>
+      {feedback && <FeedbackPanel current={current} feedback={feedback} state={state} actions={actions} />}
     </div>
   );
 }
@@ -767,10 +886,21 @@ function ProfileScreen({ state, actions }) {
     <div className="single-column">
       <ScreenHeader
         eyebrow="Personalizacion"
-        title="Experiencia adaptable"
-        description="Permite probar si usuarios con distintos niveles prefieren explicaciones rapidas o detalladas."
+        title="Ingles adaptado al usuario"
+        description="Permite probar si aprender ingles mejora cuando las explicaciones se adaptan al pais, nivel y modo de aprendizaje del usuario."
       />
       <div className="settings-grid">
+        <div className="panel country-panel">
+          <span className="label">Pais o region</span>
+          <p className="setting-hint">Se usa para personalizar ejemplos en espanol mientras la leccion sigue enfocada en ingles.</p>
+          <div className="segmented country-options">
+            {countryOptions.map((country) => (
+              <button key={country} className={state.country === country ? 'selected' : ''} onClick={() => actions.updateSetting('country', country)}>
+                {country}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="panel">
           <span className="label">Nivel</span>
           <div className="segmented">
